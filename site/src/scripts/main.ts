@@ -687,43 +687,137 @@ function reels() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   15. Formulario → WhatsApp
+   15. Formularios → WhatsApp
    ════════════════════════════════════════════════════════════ */
+
+/* Arma el mensaje con los campos que existan: lo comparten el formulario
+   de contacto y el modal de cotización, que piden datos distintos. */
+function mensajeWhatsApp(form: HTMLFormElement) {
+  const d = new FormData(form);
+  const v = (k: string) => String(d.get(k) || '').trim();
+
+  const lineas = [`Hola Agustín, soy ${v('nombre')}` + (v('marca') ? ` de ${v('marca')}` : '') + '.'];
+
+  const detalles: string[] = [];
+  if (v('tipo')) detalles.push(`Tipo de negocio: ${v('tipo')}`);
+  if (v('servicio')) detalles.push(`Servicio de interés: ${v('servicio')}`);
+  if (v('ciudad')) detalles.push(`Ciudad: ${v('ciudad')}`);
+  if (v('web')) detalles.push(`Instagram o web: ${v('web')}`);
+  if (v('email')) detalles.push(`Correo: ${v('email')}`);
+  if (v('telefono')) detalles.push(`Teléfono: ${v('telefono')}`);
+  if (detalles.length) lineas.push('', ...detalles);
+
+  if (v('mensaje')) lineas.push('', v('mensaje'));
+  return lineas.join('\n');
+}
+
+function enviarPorWhatsApp(form: HTMLFormElement, ok: HTMLElement | null) {
+  if (!form.reportValidity()) return;
+  window.open(
+    `https://wa.me/18494528731?text=${encodeURIComponent(mensajeWhatsApp(form))}`,
+    '_blank',
+    'noopener'
+  );
+
+  form.hidden = true;
+  if (ok) {
+    ok.hidden = false;
+    if (!reduced) gsap.fromTo(ok, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: 'expo.out' });
+  }
+}
+
 function contactForm() {
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const ok = document.getElementById('form-ok');
-  const reset = document.getElementById('form-reset');
   if (!form) return;
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (!form.reportValidity()) return;
-
-    const data = new FormData(form);
-    const nombre = String(data.get('nombre') || '').trim();
-    const marca = String(data.get('marca') || '').trim();
-    const servicio = String(data.get('servicio') || '');
-    const mensaje = String(data.get('mensaje') || '').trim();
-
-    const text =
-      `Hola Agustín, soy ${nombre}` +
-      (marca ? ` de ${marca}` : '') +
-      `.\n\nServicio de interés: ${servicio}\n\n${mensaje}`;
-
-    window.open(`https://wa.me/18494528731?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
-
-    form.hidden = true;
-    if (ok) ok.hidden = false;
-    if (!reduced && ok) {
-      gsap.fromTo(ok, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: 'expo.out' });
-    }
+    enviarPorWhatsApp(form, ok);
   });
 
-  reset?.addEventListener('click', () => {
+  document.getElementById('form-reset')?.addEventListener('click', () => {
     form.reset();
     form.hidden = false;
     if (ok) ok.hidden = true;
   });
+}
+
+/* ════════════════════════════════════════════════════════════
+   16. Modal de cotización
+   ════════════════════════════════════════════════════════════ */
+function quoteModal() {
+  const fab = document.getElementById('quote-open');
+  const modal = document.getElementById('quote-modal');
+  const form = document.getElementById('quote-form') as HTMLFormElement | null;
+  const ok = document.getElementById('quote-ok');
+  if (!fab || !modal || !form) return;
+
+  const scrim = modal.querySelector<HTMLElement>('.qm__scrim');
+  const panel = modal.querySelector<HTMLElement>('.qm__panel');
+  let abridor: HTMLElement | null = null;
+
+  const abrir = () => {
+    abridor = (document.activeElement as HTMLElement) ?? fab;
+    modal.hidden = false;
+    document.body.classList.add('is-locked');
+    fab.classList.remove('is-in'); // el botón no debe flotar sobre su propio modal
+
+    if (reduced) {
+      gsap.set([scrim, panel], { opacity: 1, y: 0, scale: 1 });
+    } else {
+      gsap.fromTo(scrim, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+      gsap.fromTo(
+        panel,
+        { opacity: 0, y: 18, scale: 0.98 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.55, ease: 'expo.out' }
+      );
+    }
+
+    // El foco entra al panel para que el teclado no se quede detrás
+    panel?.querySelector<HTMLElement>('input, select, textarea, button')?.focus();
+    document.dispatchEvent(new Event('ap:rebind'));
+  };
+
+  /* `fin` es idempotente y se llama por dos vías: al terminar la animación
+     y por un temporizador de respaldo. Si el ticker de GSAP está parado
+     —pestaña en segundo plano— el onComplete no llega y el modal se
+     quedaría abierto para siempre. */
+  const cerrar = () => {
+    if (modal.hidden) return;
+    const fin = () => {
+      if (modal.hidden) return;
+      modal.hidden = true;
+      document.body.classList.remove('is-locked');
+      fab.classList.add('is-in');
+      abridor?.focus();
+    };
+    if (reduced) return fin();
+    gsap.to(panel, { opacity: 0, y: 12, duration: 0.28, ease: 'power2.in' });
+    gsap.to(scrim, { opacity: 0, duration: 0.28, ease: 'power2.in', onComplete: fin });
+    window.setTimeout(fin, 600);
+  };
+
+  fab.addEventListener('click', abrir);
+  modal.querySelectorAll('[data-quote-close]').forEach((b) => b.addEventListener('click', cerrar));
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.hidden) cerrar();
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    enviarPorWhatsApp(form, ok);
+  });
+
+  document.getElementById('quote-reset')?.addEventListener('click', () => {
+    form.reset();
+    form.hidden = false;
+    if (ok) ok.hidden = true;
+  });
+
+  // Aparece poco después de cargar, sin esperar al scroll
+  window.setTimeout(() => fab.classList.add('is-in'), 900);
 }
 
 /* ════════════════════════════════════════════════════════════
@@ -773,6 +867,7 @@ const safe = (fn: () => void) => {
   cursor,
   gallery,
   contactForm,
+  quoteModal,
   reels,
   reveals,
   parallax,

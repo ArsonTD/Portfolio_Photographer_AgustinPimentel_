@@ -243,6 +243,63 @@ h3.display { font-size: clamp(1.45rem, 2.5vw, 2.1rem); line-height: 1.12; }
 .tab:hover { color: var(--fg); border-color: var(--line-strong); }
 .tab.is-active { background: var(--fg); border-color: var(--fg); color: var(--bg); }
 
+/* ── Campos de formulario (contacto y modal de cotización) ── */
+
+.field { display: grid; gap: 8px; }
+
+.field__l {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--fg);
+  transition: border-color 0.4s var(--ease);
+  border-radius: 0;
+}
+
+.field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+.field input::placeholder,
+.field textarea::placeholder { color: var(--fg-muted); opacity: 0.55; }
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-bottom-color: var(--fg);
+}
+
+.field input:user-invalid,
+.field textarea:user-invalid { border-bottom-color: #d0736b; }
+
+.field__select { position: relative; display: grid; }
+.field__select select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 24px;
+}
+.field__select select option { background: var(--surface); color: var(--fg); }
+.field__select svg {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--fg-muted);
+  pointer-events: none;
+}
+
 /* ── Reveals ──────────────────────────────────────────────── */
 
 .reveal { opacity: 0; }

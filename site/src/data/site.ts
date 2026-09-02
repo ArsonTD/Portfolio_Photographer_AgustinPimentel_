@@ -101,6 +101,24 @@ export const testimonials = [
   },
 ];
 
+/* Opciones de los formularios: las comparten el modal de cotización y la
+   página de contacto, para no tener dos listas que se desincronicen. */
+export const tiposDeNegocio = [
+  'Restaurante o cafetería',
+  'Marca de alimentos',
+  'Joyería',
+  'Belleza y cuidado personal',
+  'Otro',
+];
+
+export const necesidades = [
+  'Fotografía gastronómica',
+  'Fotografía de producto',
+  'Fotografía de joyería',
+  'Paquete mensual de contenido',
+  'Cotización a medida',
+];
+
 /* Los dos reels publicados en Instagram: el contenido de /videos. */
 export const reels = [
   {

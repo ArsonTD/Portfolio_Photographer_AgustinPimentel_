@@ -1,0 +1,316 @@
+---
+import { Image } from 'astro:assets';
+import { site, tiposDeNegocio, necesidades } from '../data/site';
+import { projects } from '../data/projects';
+
+/* Una foto de producto acompaña el formulario, como en la referencia */
+const muestra = projects.find((p) => p.slug === 'zidal-plus')!.photos[0];
+---
+
+<button class="fab" id="quote-open" type="button" aria-haspopup="dialog" data-cursor>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+    <path d="M8 3h8l4 4v14H4V3h4Z" stroke-linejoin="round" />
+    <path d="M8 12h8M8 16h5" stroke-linecap="round" />
+  </svg>
+  Cotizar
+</button>
+
+<div class="qm" id="quote-modal" hidden>
+  <div class="qm__scrim" data-quote-close data-cursor="Cerrar"></div>
+
+  <div class="qm__panel" role="dialog" aria-modal="true" aria-labelledby="qm-title">
+    <button class="qm__close" type="button" data-quote-close aria-label="Cerrar (Esc)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" />
+      </svg>
+    </button>
+
+    <div class="qm__grid">
+      <div class="qm__main">
+        <h2 id="qm-title" class="qm__title">
+          Cuéntame de tu marca y te envío una propuesta.
+          <em class="italic">Respondo el mismo día.</em>
+        </h2>
+
+        <form class="qm__form" id="quote-form" novalidate>
+          <div class="qm__row">
+            <label class="field">
+              <span class="field__l">Nombre y apellido *</span>
+              <input type="text" name="nombre" required autocomplete="name" placeholder="Tu nombre" />
+            </label>
+            <label class="field">
+              <span class="field__l">Marca o negocio *</span>
+              <input type="text" name="marca" required autocomplete="organization" placeholder="Nombre de la marca" />
+            </label>
+          </div>
+
+          <div class="qm__row">
+            <label class="field">
+              <span class="field__l">Correo *</span>
+              <input type="email" name="email" required autocomplete="email" placeholder="nombre@empresa.com" />
+            </label>
+            <label class="field">
+              <span class="field__l">Teléfono / WhatsApp *</span>
+              <input type="tel" name="telefono" required autocomplete="tel" placeholder="809 000 0000" />
+            </label>
+          </div>
+
+          <div class="qm__row">
+            <label class="field">
+              <span class="field__l">Tipo de negocio *</span>
+              <div class="field__select">
+                <select name="tipo" required>
+                  <option value="" disabled selected>Selecciona una opción</option>
+                  {tiposDeNegocio.map((t) => <option value={t}>{t}</option>)}
+                </select>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+            </label>
+            <label class="field">
+              <span class="field__l">Ciudad</span>
+              <input type="text" name="ciudad" autocomplete="address-level2" placeholder="Santo Domingo" />
+            </label>
+          </div>
+
+          <label class="field">
+            <span class="field__l">Instagram o web del negocio</span>
+            <input type="text" name="web" placeholder="@tumarca o tumarca.com" />
+          </label>
+
+          <label class="field">
+            <span class="field__l">¿Qué necesitas?</span>
+            <div class="field__select">
+              <select name="servicio">
+                <option value="" disabled selected>Selecciona una opción</option>
+                {necesidades.map((n) => <option value={n}>{n}</option>)}
+              </select>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+          </label>
+
+          <label class="field">
+            <span class="field__l">Cuéntame brevemente</span>
+            <textarea name="mensaje" rows="3" placeholder="Cantidad de platos o productos, fechas, uso de las imágenes…"></textarea>
+          </label>
+
+          <button type="submit" class="btn btn--solid qm__send" data-cursor>
+            Enviar solicitud
+            <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </form>
+      </div>
+
+      <aside class="qm__aside">
+        <p class="qm__note">
+          Trabajo con restaurantes, marcas de alimentos y productos en Santo Domingo y toda
+          {' '}{site.location}.
+        </p>
+
+        <a
+          href={site.wa('Hola Agustín, quiero cotizar una sesión de fotos para mi marca.')}
+          target="_blank"
+          rel="noopener"
+          class="link-u qm__wa"
+          data-cursor
+        >
+          O escríbeme por WhatsApp
+        </a>
+
+        <figure class="qm__foto">
+          <Image
+            src={muestra}
+            alt=""
+            widths={[340, 520]}
+            sizes="(max-width: 920px) 40vw, 340px"
+            format="webp"
+            quality={76}
+            loading="lazy"
+          />
+        </figure>
+      </aside>
+    </div>
+
+    <div class="qm__ok" id="quote-ok" hidden>
+      <span class="qm__ok-ico" aria-hidden="true">✓</span>
+      <p class="qm__ok-t">Solicitud lista</p>
+      <p class="qm__ok-c">
+        WhatsApp se abrió con tu mensaje. Te respondo en menos de un día.
+      </p>
+      <button type="button" class="link-u qm__ok-reset" id="quote-reset">Enviar otra solicitud</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Botón flotante ── */
+  .fab {
+    position: fixed;
+    right: clamp(16px, 2.4vw, 30px);
+    /* Justo encima del botón de WhatsApp */
+    bottom: calc(clamp(16px, 2.4vw, 30px) + 66px);
+    z-index: 400;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .fab.is-in { opacity: 1; transform: none; }
+  .fab:hover { transform: translateY(-2px); }
+
+  @media (max-width: 520px) {
+    .fab { padding: 12px 16px; gap: 8px; font-size: 10px; }
+  }
+
+  /* ── Modal ── */
+  .qm {
+    position: fixed;
+    inset: 0;
+    z-index: 8200;
+    display: grid;
+    place-items: center;
+    padding: clamp(12px, 3vw, 40px);
+    color: var(--fg);
+  }
+  .qm[hidden] { display: none; }
+
+  .qm__scrim {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+  }
+
+  .qm__panel {
+    position: relative;
+    z-index: 1;
+    width: min(1080px, 100%);
+    max-height: 92svh;
+    overflow-y: auto;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    box-shadow: 0 40px 100px -40px rgba(0, 0, 0, 0.55);
+    padding: clamp(24px, 3.4vw, 48px);
+    opacity: 0;
+  }
+
+  .qm__close {
+    position: absolute;
+    top: clamp(14px, 2vw, 22px);
+    right: clamp(14px, 2vw, 22px);
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--fg-muted);
+    transition: background 0.35s var(--ease), color 0.35s var(--ease), transform 0.45s var(--ease);
+  }
+  .qm__close:hover { background: var(--fg); color: var(--bg); transform: rotate(90deg); }
+
+  .qm__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: start;
+  }
+
+  .qm__title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    line-height: 1.16;
+    letter-spacing: -0.015em;
+    max-width: 22ch;
+    margin-bottom: clamp(20px, 3vh, 32px);
+    padding-right: 44px;
+  }
+  .qm__title em { color: var(--fg-muted); }
+
+  .qm__form { display: grid; gap: clamp(14px, 2vh, 20px); }
+
+  .qm__row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 26px);
+  }
+
+  .qm__send { justify-self: start; margin-top: 6px; }
+
+  /* ── Columna derecha ── */
+  .qm__aside { display: grid; gap: 18px; align-content: start; }
+
+  .qm__note {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--fg-dim);
+  }
+
+  .qm__wa {
+    justify-self: start;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg);
+  }
+
+  .qm__foto { margin: 0; overflow: hidden; background: var(--surface-2); }
+  .qm__foto :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  /* ── Confirmación ── */
+  .qm__ok {
+    display: grid;
+    gap: 10px;
+    justify-items: start;
+    padding-block: clamp(20px, 5vh, 48px);
+  }
+  .qm__ok[hidden] { display: none; }
+  .qm__ok-ico {
+    width: 46px; height: 46px;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    color: var(--fg);
+  }
+  .qm__ok-t { font-family: var(--serif); font-size: 1.6rem; }
+  .qm__ok-c { font-size: 14px; color: var(--fg-muted); max-width: 44ch; }
+  .qm__ok-reset { font-size: 13px; color: var(--fg-dim); }
+
+  @media (max-width: 920px) {
+    .qm__grid { grid-template-columns: 1fr; }
+    /* En vertical la foto sobra y el contexto va tras el formulario:
+       lo primero que debe leerse es el titular. */
+    .qm__foto { display: none; }
+    .qm__aside {
+      gap: 12px;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .qm__row { grid-template-columns: 1fr; }
+    .qm__title { padding-right: 40px; }
+  }
+</style>
