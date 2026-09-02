@@ -1,0 +1,167 @@
+---
+import { Image } from 'astro:assets';
+import { portrait } from '../data/projects';
+import { stats, site } from '../data/site';
+
+interface Props {
+  variant?: 'full' | 'teaser';
+  /** true cuando un PageHeader ya presenta la sección */
+  standalone?: boolean;
+}
+
+const { variant = 'full', standalone = false } = Astro.props;
+const isFull = variant === 'full';
+---
+
+<section class="section about" id="sobre-mi" aria-label="Sobre mí">
+  <div class="shell about__grid">
+    <figure class="about__media" data-parallax="0.08">
+      <Image
+        src={portrait}
+        alt={`Retrato de ${site.name}, fotógrafo comercial`}
+        widths={[420, 640, 900]}
+        sizes="(max-width: 900px) 88vw, 34vw"
+        format="webp"
+        quality={84}
+        loading="lazy"
+      />
+      <figcaption class="about__badge">
+        <span class="about__badge-k display">AP</span>
+        <span class="caption">Detrás<br />del lente</span>
+      </figcaption>
+    </figure>
+
+    <div class="about__body">
+      {!standalone && (
+        <>
+          <p class="eyebrow reveal" data-reveal="fade">Sobre mí</p>
+
+          <h2 id="about-h" class="display about__title">
+            <span class="line"><span data-reveal="mask">La historia</span></span>
+            <span class="line"><span data-reveal="mask">detrás del</span></span>
+            <span class="line"><em class="italic" data-reveal="mask">lente</em></span>
+          </h2>
+        </>
+      )}
+
+      <div class="about__text">
+        <p class="lead reveal" data-reveal="fade">
+          Soy Agustín, fotógrafo especializado en fotografía gastronómica y de producto. Me enfoco en
+          crear imágenes auténticas que transmitan la esencia de cada marca y ayuden a atraer más
+          clientes.
+        </p>
+
+        {isFull && (
+          <>
+            <p class="reveal about__p" data-reveal="fade">
+              Trabajo cuidando cada detalle, buscando que cada foto se vea natural, atractiva y
+              alineada con los objetivos del negocio. Mi prioridad es que el contenido no solo se vea
+              bien, sino que funcione y conecte con las personas.
+            </p>
+            <p class="reveal about__p" data-reveal="fade">
+              Acompaño a mis clientes de forma clara y profesional durante todo el proceso, para que
+              el resultado final represente fielmente su marca.
+            </p>
+          </>
+        )}
+      </div>
+
+      <ul class="stats" role="list">
+        {stats.map((s) => (
+          <li class="stat reveal" data-reveal="fade">
+            <span class:list={['stat__v', 'display', { 'stat__v--stars': 'stars' in s }]}>{s.value}</span>
+            <span class="caption stat__l">{s.label}</span>
+          </li>
+        ))}
+      </ul>
+
+      {isFull ? (
+        <a href="/contacto" class="link-u about__link reveal" data-reveal="fade" data-cursor>
+          ¿Te identificas con lo que hago? Trabajemos juntos →
+        </a>
+      ) : (
+        <a href="/sobre-mi" class="btn btn--sm about__btn reveal" data-reveal="fade" data-cursor>
+          Conocer más
+          <svg class="arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .about { background: var(--surface); }
+
+  .about__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: clamp(36px, 6vw, 96px);
+    align-items: center;
+  }
+
+  .about__media { position: relative; margin: 0; }
+  .about__media :global(img) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: var(--surface-2);
+  }
+
+  .about__badge {
+    position: absolute;
+    right: -18px;
+    bottom: -22px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow);
+  }
+  .about__badge-k { font-size: 30px; line-height: 1; color: var(--fg); }
+  .about__badge .caption { line-height: 1.4; }
+
+  .about__body { display: grid; gap: clamp(20px, 3vh, 30px); }
+
+  .about__title .line { display: block; overflow: hidden; padding-bottom: 0.05em; }
+  .about__title .line span,
+  .about__title .line em { display: block; }
+  .about__title em { color: var(--fg-dim); }
+
+  .about__text { display: grid; gap: 18px; max-width: 62ch; }
+  .about__p { color: var(--fg-muted); font-size: 15px; line-height: 1.75; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    padding-block: clamp(20px, 3vh, 30px);
+    border-block: 1px solid var(--line);
+  }
+
+  .stat { display: grid; gap: 8px; align-content: start; }
+  .stat__v {
+    font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+    line-height: 1.2;
+    white-space: pre-line;
+    color: var(--fg);
+  }
+  .stat__v--stars {
+    color: var(--star);
+    letter-spacing: 0.1em;
+  }
+  .stat__l { line-height: 1.4; }
+
+  .about__link, .about__btn { justify-self: start; }
+  .about__link { font-size: 14px; color: var(--fg-dim); }
+  .about__link:hover { color: var(--fg); }
+
+  @media (max-width: 900px) {
+    .about__grid { grid-template-columns: 1fr; }
+    .about__media { max-width: 420px; }
+    .stats { grid-template-columns: 1fr; gap: 20px; }
+  }
+</style>

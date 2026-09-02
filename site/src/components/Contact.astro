@@ -1,0 +1,238 @@
+---
+import { site } from '../data/site';
+
+const channels = [
+  { label: 'WhatsApp', value: site.phone, href: `https://wa.me/${site.phoneIntl}` },
+  { label: 'Correo', value: site.email, href: `mailto:${site.email}` },
+  { label: 'Instagram', value: `@${site.instagram}`, href: site.instagramUrl },
+];
+
+const serviceOptions = [
+  'Fotografía Gastronómica',
+  'Fotografía de Producto',
+  'Fotografía de Joyería',
+  'Paquete mensual de contenido',
+  'Cotización a medida',
+];
+---
+
+<section class="section cta" id="contacto" aria-labelledby="cta-h">
+  <div class="shell cta__grid">
+    <div class="cta__left">
+      <h2 id="cta-h" class="cta__h2 caption reveal" data-reveal="fade">Canales directos</h2>
+
+      <ul class="ch" role="list">
+        {channels.map((c) => (
+          <li class="reveal" data-reveal="row">
+            <a href={c.href} target="_blank" rel="noopener" class="ch__item" data-cursor>
+              <span class="caption ch__label">{c.label}</span>
+              <span class="ch__value">{c.value}</span>
+              <span class="ch__arrow" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="cta__right reveal" data-reveal="card">
+      <form class="form" id="contact-form" novalidate>
+        <div class="form__row">
+          <label class="field">
+            <span class="field__l">Nombre</span>
+            <input type="text" name="nombre" required autocomplete="name" placeholder="Tu nombre" />
+          </label>
+          <label class="field">
+            <span class="field__l">Marca / Negocio</span>
+            <input type="text" name="marca" autocomplete="organization" placeholder="Opcional" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span class="field__l">Tipo de servicio</span>
+          <div class="field__select">
+            <select name="servicio">
+              {serviceOptions.map((o) => <option value={o}>{o}</option>)}
+            </select>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        </label>
+
+        <label class="field">
+          <span class="field__l">Cuéntame sobre tu proyecto</span>
+          <textarea name="mensaje" rows="4" required placeholder="Qué necesitas fotografiar, fechas aproximadas, cantidad de imágenes…"></textarea>
+        </label>
+
+        <button type="submit" class="btn btn--solid form__send" data-cursor>
+          Enviar por WhatsApp
+          <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <p class="form__note caption">
+          Se abrirá WhatsApp con tu mensaje listo para enviar. Sin formularios que se pierden.
+        </p>
+      </form>
+
+      <div class="form__ok" id="form-ok" hidden>
+        <span class="form__ok-ico" aria-hidden="true">✓</span>
+        <p class="form__ok-t">¡Mensaje listo!</p>
+        <p class="form__ok-c">WhatsApp se abrió con tu mensaje. Te respondo en menos de un día.</p>
+        <button type="button" class="link-u" id="form-reset">Escribir otro mensaje</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta { background: var(--bg); }
+
+  .cta__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+
+  .cta__left { display: grid; gap: 18px; align-content: start; }
+
+  .cta__h2 { color: var(--fg-muted); }
+
+  .ch { border-top: 1px solid var(--line); }
+
+  .ch__item {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr) 24px;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding-left 0.55s var(--ease);
+  }
+  .ch__item:hover { padding-left: 12px; }
+
+  .ch__label { color: var(--fg-muted); }
+
+  .ch__value {
+    font-family: var(--serif);
+    font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+    color: var(--fg);
+  }
+
+  .ch__arrow {
+    justify-self: end;
+    color: var(--fg-muted);
+    transform: translateX(-6px);
+    opacity: 0;
+    transition: transform 0.5s var(--ease), opacity 0.4s var(--ease);
+  }
+  .ch__item:hover .ch__arrow { transform: none; opacity: 1; }
+
+  /* ── Formulario ── */
+  .cta__right {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: clamp(24px, 3vw, 42px);
+    position: relative;
+  }
+
+  .form { display: grid; gap: 20px; }
+
+  .form__row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .field { display: grid; gap: 8px; }
+
+  .field__l {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  .field input,
+  .field textarea,
+  .field select {
+    width: 100%;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line-strong);
+    padding: 10px 0;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--fg);
+    transition: border-color 0.4s var(--ease);
+    border-radius: 0;
+  }
+
+  .field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+  .field input::placeholder,
+  .field textarea::placeholder { color: var(--fg-muted); opacity: 0.55; }
+
+  .field input:focus,
+  .field textarea:focus,
+  .field select:focus {
+    outline: none;
+    border-bottom-color: var(--fg);
+  }
+
+  .field input:user-invalid,
+  .field textarea:user-invalid { border-bottom-color: #d0736b; }
+
+  .field__select { position: relative; display: grid; }
+  .field__select select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 24px;
+  }
+  .field__select select option { background: var(--surface); color: var(--fg); }
+  .field__select svg {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--fg-muted);
+    pointer-events: none;
+  }
+
+  .form__send { justify-self: start; margin-top: 4px; }
+
+  .form__note { line-height: 1.6; }
+
+  .form__ok {
+    display: grid;
+    gap: 10px;
+    justify-items: start;
+    padding-block: 20px;
+  }
+  .form__ok[hidden] { display: none; }
+
+  .form__ok-ico {
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    color: var(--fg);
+  }
+  .form__ok-t { font-family: var(--serif); font-size: 1.5rem; }
+  .form__ok-c { font-size: 14px; color: var(--fg-muted); max-width: 40ch; }
+  #form-reset { font-size: 13px; color: var(--fg-dim); }
+
+  @media (max-width: 960px) {
+    .cta__grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .form__row { grid-template-columns: 1fr; }
+    .ch__item { grid-template-columns: 90px minmax(0, 1fr) 20px; gap: 10px; }
+  }
+</style>

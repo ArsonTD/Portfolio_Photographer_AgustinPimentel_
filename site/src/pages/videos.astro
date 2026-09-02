@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Reels from '../components/Reels.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title={`Videos — ${site.name} | Fotografía y video comercial RD`}
+  description="El proceso detrás del arte: el making of y la edición de las fotografías de Agustín Pimentel."
+>
+  <PageHeader
+    eyebrow="Detrás de cámara"
+    title="El proceso"
+    accent="detrás del arte"
+    lead="Lo que no se ve en una fotografía terminada: el making of y la edición, tal como los publico en Instagram."
+  />
+
+  <Reels standalone />
+
+  <CtaBand
+    title="¿Quieres video"
+    accent="para tu marca?"
+    copy="Además de la fotografía, produzco contenido en movimiento para redes y campañas."
+  />
+</Base>

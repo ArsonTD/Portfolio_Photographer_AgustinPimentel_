@@ -1,0 +1,150 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+import Nav from '../components/Nav.astro';
+import Cursor from '../components/Cursor.astro';
+import Footer from '../components/Footer.astro';
+import Preloader from '../components/Preloader.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** El preloader completo solo tiene sentido en la portada */
+  intro?: boolean;
+}
+
+const {
+  title = `${site.name} — ${site.role} | ${site.location}`,
+  description = site.description,
+  intro = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://agustinpimentell.com');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  description: site.description,
+  image: new URL('/og.jpg', canonical).href,
+  url: canonical.href,
+  telephone: `+1${site.phoneIntl.slice(1)}`,
+  email: site.email,
+  address: { '@type': 'PostalAddress', addressCountry: 'DO' },
+  areaServed: 'República Dominicana',
+  sameAs: [site.instagramUrl],
+  knowsAbout: ['Fotografía gastronómica', 'Fotografía de producto', 'Fotografía de joyería'],
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: '5', reviewCount: '15' },
+};
+---
+
+<!doctype html>
+<html lang="es-DO" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f5f0e8" media="(prefers-color-scheme: light)" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_DO" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL('/og.jpg', canonical).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230d0d0d'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='16' fill='%23f5f0e8'%3EAP%3C/text%3E%3C/svg%3E"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,200..700;1,9..40,300..500&family=Playfair+Display:ital,wght@0,400..700;1,400..600&display=swap"
+    />
+    {/* Playfair no cubre japonés ni árabe. Con `text=` Google devuelve una
+        fuente con solo esos glifos: unos pocos KB, no la familia entera. */}
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&text=%E3%81%93%E3%82%93%E3%81%AB%E3%81%A1%E3%81%AF&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400&text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7&display=swap"
+    />
+
+    <script is:inline>
+      // Tema + flags antes del primer paint (evita parpadeo)
+      (function () {
+        const r = document.documentElement;
+        r.classList.remove('no-js');
+
+        // Cada carga empieza arriba, como al pulsar el logo. Sin esto el
+        // navegador restaura el scroll anterior y se entra a media página.
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+        try {
+          const saved = localStorage.getItem('ap-theme');
+          const sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          r.dataset.theme = saved || sys;
+        } catch (e) {
+          r.dataset.theme = 'dark';
+        }
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          r.classList.add('reduce-motion');
+        }
+      })();
+    </script>
+
+    <set:html value={`<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`} />
+  </head>
+
+  <body>
+    <div class="page-veil" id="page-veil" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    {intro && <Preloader />}
+    <Cursor />
+    <Nav />
+
+    <a href="#main" class="sr-only">Saltar al contenido</a>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      import '../scripts/main.ts';
+    </script>
+
+    <style is:global>
+      /* El velo se retira solo con CSS: si el JS falla, la página
+         nunca queda tapada. El JS solo lo usa para la salida. */
+      .page-veil {
+        position: fixed;
+        inset: 0;
+        z-index: 8500;
+        background: var(--bg);
+        pointer-events: none;
+        opacity: 1;
+        animation: veil-out 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+      }
+      @keyframes veil-out {
+        from { opacity: 1; }
+        to { opacity: 0; visibility: hidden; }
+      }
+      html.no-js .page-veil,
+      html.reduce-motion .page-veil { display: none; }
+    </style>
+  </body>
+</html>

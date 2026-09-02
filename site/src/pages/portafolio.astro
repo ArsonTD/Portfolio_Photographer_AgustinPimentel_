@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Gallery from '../components/Gallery.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title={`Portafolio — ${site.name} | Fotografía comercial RD`}
+  description="Portafolio de fotografía gastronómica, de producto y de joyería para marcas en República Dominicana."
+>
+  <PageHeader
+    eyebrow="Portafolio"
+    title="Trabajo"
+    accent="reciente"
+    lead="Once marcas, tres especialidades. Toca una para recorrer toda la sesión."
+  />
+
+  <Gallery variant="full" />
+
+  <CtaBand
+    title="¿Tu marca"
+    accent="es la siguiente?"
+    copy="Cuéntame qué necesitas fotografiar y armamos la sesión a la medida de tu negocio."
+  />
+</Base>

@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Services from '../components/Services.astro';
+import Process from '../components/Process.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title={`Servicios — ${site.name} | Fotografía comercial RD`}
+  description="Fotografía gastronómica, de producto y de joyería. Cómo trabajo, qué incluye cada servicio y cuál es el proceso."
+>
+  <PageHeader
+    eyebrow="Servicios"
+    title="Lo que"
+    accent="hago"
+    lead="Tres especialidades, un mismo criterio: que la imagen trabaje para tu marca."
+  />
+
+  <Services variant="full" standalone />
+  <Process />
+
+  <CtaBand
+    title="¿Cuál encaja"
+    accent="con tu marca?"
+    copy="Si no lo tienes claro, escríbeme y lo definimos juntos en una llamada corta."
+  />
+</Base>

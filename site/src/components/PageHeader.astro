@@ -1,0 +1,58 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  accent?: string;
+  lead?: string;
+}
+
+const { eyebrow, title, accent, lead } = Astro.props;
+---
+
+<header class="ph">
+  <div class="shell ph__inner">
+    <p class="eyebrow ph__eyebrow reveal" data-reveal="fade">
+      <span class="ph__tick" aria-hidden="true"></span>
+      {eyebrow}
+    </p>
+
+    <h1 class="display ph__title">
+      <span class="line"><span data-reveal="mask">{title}</span></span>
+      {accent && (
+        <span class="line"><em class="italic" data-reveal="mask">{accent}</em></span>
+      )}
+    </h1>
+
+    {lead && <p class="lead ph__lead reveal" data-reveal="fade">{lead}</p>}
+  </div>
+</header>
+
+<style>
+  .ph {
+    padding: clamp(130px, 20vh, 200px) var(--pad-x) clamp(40px, 6vh, 70px);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+
+  .ph__inner {
+    display: grid;
+    gap: clamp(16px, 2.4vh, 26px);
+  }
+
+  .ph__eyebrow { display: flex; align-items: center; gap: 14px; }
+
+  .ph__tick {
+    width: 28px;
+    height: 1px;
+    background: var(--line-strong);
+    flex: 0 0 auto;
+  }
+
+  .ph__title { max-width: 18ch; }
+  .ph__title .line { display: block; overflow: hidden; padding-bottom: 0.05em; }
+  .ph__title .line span,
+  .ph__title .line em { display: block; }
+  .ph__title em { color: var(--fg-dim); }
+
+  .ph__lead { max-width: 52ch; }
+</style>

@@ -1,0 +1,16 @@
+# Normaliza los finales de línea en el repositorio (LF) y respeta los
+# del sistema en la copia de trabajo.
+* text=auto eol=lf
+
+# Binarios: git no debe tocarlos ni intentar hacer diff de ellos
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.mp4  binary
+*.mov  binary
+*.woff  binary
+*.woff2 binary

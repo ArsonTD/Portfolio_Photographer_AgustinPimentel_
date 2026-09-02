@@ -1,0 +1,59 @@
+---
+import { projects } from '../data/projects';
+
+const names = projects.map((p) => p.title);
+const items = [...names, 'Glorioso', 'Nila'];
+---
+
+<section class="mq" aria-label="Marcas con las que he trabajado">
+  <div class="mq__track" data-marquee>
+    {[0, 1, 2].map((rep) => (
+      <div class="mq__group" aria-hidden={rep > 0 ? 'true' : undefined}>
+        {items.map((n) => (
+          <span class="mq__item">
+            <span class="mq__star" aria-hidden="true">✳</span>
+            {n}
+          </span>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .mq {
+    border-block: 1px solid var(--line);
+    padding-block: 20px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .mq__track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .mq__group {
+    display: flex;
+    align-items: center;
+    gap: clamp(28px, 4vw, 56px);
+    padding-right: clamp(28px, 4vw, 56px);
+  }
+
+  .mq__item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(28px, 4vw, 56px);
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 1.7vw, 1.6rem);
+    color: var(--fg-dim);
+    white-space: nowrap;
+  }
+
+  .mq__star {
+    font-family: var(--sans);
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+</style>

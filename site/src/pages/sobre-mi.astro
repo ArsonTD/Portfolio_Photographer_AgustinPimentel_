@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/PageHeader.astro';
+import About from '../components/About.astro';
+import Testimonials from '../components/Testimonials.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title={`Sobre mí — ${site.name} | Fotógrafo comercial`}
+  description="Quién está detrás del lente: cómo trabajo, qué busco en cada imagen y lo que dicen las marcas con las que he trabajado."
+>
+  <PageHeader
+    eyebrow="Sobre mí"
+    title="Detrás"
+    accent="del lente"
+    lead="Fotógrafo comercial en República Dominicana, enfocado en gastronomía, producto y joyería."
+  />
+
+  <About variant="full" standalone />
+  <Testimonials />
+
+  <CtaBand
+    title="¿Trabajamos"
+    accent="juntos?"
+    copy="Si te identificas con la forma en que trabajo, escríbeme y conversamos sobre tu proyecto."
+  />
+</Base>

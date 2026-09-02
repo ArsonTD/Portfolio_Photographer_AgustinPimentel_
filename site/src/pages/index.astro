@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import Gallery from '../components/Gallery.astro';
+import About from '../components/About.astro';
+import Services from '../components/Services.astro';
+import Testimonials from '../components/Testimonials.astro';
+import CtaBand from '../components/CtaBand.astro';
+---
+
+<Base intro>
+  <Hero />
+  <Marquee />
+  <Gallery variant="preview" limit={9} heading="Trabajo reciente" />
+  <About variant="teaser" />
+  <Services variant="preview" />
+  <Testimonials />
+  <CtaBand />
+</Base>

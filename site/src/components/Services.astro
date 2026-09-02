@@ -1,0 +1,166 @@
+---
+import { services } from '../data/site';
+
+interface Props {
+  variant?: 'full' | 'preview';
+  /** true cuando un PageHeader ya presenta la sección */
+  standalone?: boolean;
+}
+
+const { variant = 'full', standalone = false } = Astro.props;
+const isFull = variant === 'full';
+---
+
+<section class="section services" id="servicios" aria-label="Servicios">
+  <div class="shell">
+    {!standalone && (
+      <header class="section-head">
+        <div>
+          <p class="eyebrow reveal" data-reveal="fade">Servicios</p>
+          <h2 id="srv-h" class="display srv__h">
+            <span class="line"><span data-reveal="mask">Lo que hago</span></span>
+          </h2>
+        </div>
+        {isFull ? (
+          <p class="lead srv__intro reveal" data-reveal="fade">
+            Tres especialidades, un mismo criterio: que la imagen trabaje para tu marca.
+          </p>
+        ) : (
+          <a href="/servicios" class="btn btn--sm" data-cursor>
+            Ver servicios
+            <svg class="arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        )}
+      </header>
+    )}
+
+    <ul class="srv__list" role="list">
+      {services.map((s) => (
+        <li class="srv reveal" data-reveal="row" data-cursor>
+          <span class="srv__tick" aria-hidden="true"></span>
+
+          <div class="srv__main">
+            <h3 class="display srv__title">{s.title}</h3>
+            <p class="srv__copy">{s.copy}</p>
+          </div>
+
+          {isFull && (
+            <ul class="srv__feats" role="list">
+              {s.features.map((f) => (
+                <li>{f}</li>
+              ))}
+            </ul>
+          )}
+
+          <span class="srv__arrow" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+              <path d="M7 17 17 7M8 7h9v9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .services { background: var(--surface); }
+
+  .srv__h .line { display: block; overflow: hidden; padding-bottom: 0.05em; }
+  .srv__h .line span { display: block; }
+
+  .srv__intro { max-width: 34ch; text-align: right; }
+
+  .srv__list { border-top: 1px solid var(--line); }
+
+  .srv {
+    position: relative;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1.1fr) minmax(0, 0.85fr) 40px;
+    gap: clamp(16px, 3vw, 48px);
+    align-items: start;
+    padding: clamp(30px, 4.5vh, 52px) 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding-left 0.6s var(--ease);
+  }
+
+  .srv::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--surface-2);
+    opacity: 0;
+    transition: opacity 0.55s var(--ease);
+    z-index: -1;
+    margin-inline: calc(var(--pad-x) * -0.4);
+  }
+
+  .srv:hover { padding-left: clamp(12px, 1.6vw, 26px); }
+  .srv:hover::before { opacity: 1; }
+
+  .srv__tick {
+    width: 22px;
+    height: 1px;
+    background: var(--line-strong);
+    margin-top: 1.1em;
+    transition: width 0.55s var(--ease), background 0.4s var(--ease);
+  }
+  .srv:hover .srv__tick { width: 32px; background: var(--fg); }
+
+  .srv__main { display: grid; gap: 12px; }
+
+  .srv__title { color: var(--fg); }
+
+  .srv__copy {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--fg-muted);
+    max-width: 46ch;
+  }
+
+  .srv__feats {
+    display: grid;
+    gap: 9px;
+    padding-top: 6px;
+  }
+
+  .srv__feats li {
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    padding-left: 18px;
+    position: relative;
+  }
+  .srv__feats li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 8px;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .srv__arrow {
+    justify-self: end;
+    align-self: center;
+    color: var(--fg-muted);
+    opacity: 0;
+    transform: translate(-8px, 8px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease), color 0.4s var(--ease);
+  }
+  .srv:hover .srv__arrow { opacity: 1; transform: none; color: var(--fg); }
+
+  @media (max-width: 900px) {
+    .srv__intro { text-align: left; }
+    .srv {
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 16px;
+    }
+    .srv__feats { grid-column: 2; }
+    .srv__arrow { display: none; }
+  }
+</style>

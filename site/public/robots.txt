@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://agustinpimentell.com/sitemap-index.xml

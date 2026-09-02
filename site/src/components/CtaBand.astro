@@ -1,0 +1,83 @@
+---
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  accent?: string;
+  copy?: string;
+  primary?: { href: string; label: string };
+  secondary?: { href: string; label: string };
+}
+
+const {
+  title = '¿Listo para',
+  accent = 'comenzar?',
+  copy = 'Cuéntame sobre tu marca y te digo cómo podemos trabajar juntos. Respondo rápido por WhatsApp.',
+  primary = { href: '/contacto', label: 'Hablemos de tu proyecto' },
+  secondary = { href: site.instagramUrl, label: 'Ver Instagram' },
+} = Astro.props;
+
+const external = secondary.href.startsWith('http');
+---
+
+<section class="band">
+  <div class="shell band__inner">
+    <div class="band__copy">
+      <h2 class="display band__h">
+        <span class="line"><span data-reveal="mask">{title}</span></span>
+        <span class="line"><em class="italic" data-reveal="mask">{accent}</em></span>
+      </h2>
+      <p class="lead band__lead reveal" data-reveal="fade">{copy}</p>
+    </div>
+
+    <div class="band__actions reveal" data-reveal="fade">
+      <a href={primary.href} class="btn btn--solid" data-cursor>
+        {primary.label}
+        <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+      <a
+        href={secondary.href}
+        class="btn"
+        target={external ? '_blank' : undefined}
+        rel={external ? 'noopener' : undefined}
+        data-cursor
+      >
+        {secondary.label}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .band {
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    padding: clamp(60px, 10vh, 120px) var(--pad-x);
+  }
+
+  .band__inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: clamp(28px, 5vw, 72px);
+    flex-wrap: wrap;
+  }
+
+  .band__copy { display: grid; gap: 18px; }
+
+  .band__h .line { display: block; overflow: hidden; padding-bottom: 0.05em; }
+  .band__h .line span,
+  .band__h .line em { display: block; }
+  .band__h em { color: var(--fg-dim); }
+
+  .band__lead { max-width: 44ch; }
+
+  .band__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 620px) {
+    .band__actions { width: 100%; }
+    .band__actions .btn { flex: 1 1 auto; justify-content: center; }
+  }
+</style>

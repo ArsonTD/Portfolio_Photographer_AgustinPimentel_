@@ -1,0 +1,102 @@
+---
+import { site } from '../data/site';
+
+/* Saludos encadenados. Cierra en español, que es el idioma del sitio.
+   Playfair no cubre japonés ni árabe: para esos dos el layout carga la
+   serif de Noto subconjunteada a estos glifos (ver Base.astro). */
+const saludos = [
+  { texto: 'Hello', lang: 'en' },
+  { texto: 'Bonjour', lang: 'fr' },
+  { texto: 'Ciao', lang: 'it' },
+  { texto: 'Olá', lang: 'pt' },
+  { texto: 'Hallo', lang: 'de' },
+  { texto: 'こんにちは', lang: 'ja' },
+  { texto: 'Привет', lang: 'ru' },
+  { texto: 'مرحبا', lang: 'ar', dir: 'rtl' as const },
+  { texto: 'Hola', lang: 'es' },
+];
+---
+
+<div class="pre" id="preloader" aria-hidden="true">
+  <div class="pre__inner">
+    <span class="pre__stack">
+      {saludos.map((s) => (
+        <span class="pre__hi" data-hi>
+          <i class="pre__dot" aria-hidden="true"></i>
+          <span class="pre__word" lang={s.lang} dir={s.dir}>{s.texto}</span>
+        </span>
+      ))}
+    </span>
+  </div>
+
+  <div class="pre__foot">
+    <span class="caption">{site.role}</span>
+    <span class="caption">{site.location}</span>
+  </div>
+</div>
+
+<style>
+  .pre {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: grid;
+    place-items: center;
+    padding: var(--pad-x);
+    background: var(--bg);
+    pointer-events: none;
+    /* El borde inferior se curva al retirarse (lo anima el script) */
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    will-change: transform, border-radius;
+  }
+
+  .pre__inner { display: grid; place-items: center; }
+
+  /* Todos los saludos ocupan la misma celda: al alternarlos no hay saltos */
+  .pre__stack { display: grid; place-items: center; }
+
+  .pre__hi {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: baseline;
+    gap: clamp(12px, 1.6vw, 20px);
+    white-space: nowrap;
+    /* Noto entra solo para los glifos que Playfair no tiene */
+    font-family: 'Playfair Display', 'Noto Serif JP', 'Noto Naskh Arabic', Georgia, serif;
+    font-size: clamp(2rem, 5.4vw, 3.6rem);
+    line-height: 1;
+    color: var(--fg);
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .pre__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--fg-muted);
+    flex: 0 0 auto;
+    align-self: center;
+  }
+
+  .pre__word { display: block; }
+
+  /* Ficha técnica al pie, como una cartela */
+  .pre__foot {
+    position: absolute;
+    left: var(--pad-x);
+    right: var(--pad-x);
+    bottom: clamp(22px, 4vh, 40px);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    opacity: 0;
+  }
+
+  @media (max-width: 620px) {
+    .pre__foot { justify-content: center; }
+    .pre__foot .caption:last-child { display: none; }
+  }
+</style>

@@ -1,0 +1,161 @@
+---
+import { reels, site } from '../data/site';
+
+interface Props {
+  /** true cuando un PageHeader ya presenta la sección */
+  standalone?: boolean;
+}
+
+const { standalone = false } = Astro.props;
+---
+
+<section class="reels" id="instagram" aria-label="Detrás de cámara">
+  <div class="shell">
+    {!standalone && (
+      <header class="section-head">
+        <div>
+          <p class="eyebrow reveal" data-reveal="fade">Detrás de cámara</p>
+          <h2 id="reels-h" class="display reels__h">
+            <span class="line"><span data-reveal="mask">Cómo se hace</span></span>
+            <span class="line"><em class="italic" data-reveal="mask">cada sesión</em></span>
+          </h2>
+        </div>
+        <p class="lead reels__intro reveal" data-reveal="fade">
+          El making of y la edición, publicados en Instagram.
+        </p>
+      </header>
+    )}
+
+    <ul class="reels__grid" id="reels-grid" role="list">
+      {reels.map((reel) => (
+        <li class="reel reveal" data-reveal="card">
+          <div class="reel__head">
+            <span class="reel__title">{reel.title}</span>
+            <span class="reel__tag">{reel.tag}</span>
+          </div>
+
+          <div class="reel__slot" data-reel-slot>
+            <blockquote
+              class="instagram-media"
+              data-instgrm-permalink={`${reel.permalink}?utm_source=ig_embed`}
+              data-instgrm-version="14"
+              set:html={`<a href="${reel.permalink}" target="_blank" rel="noopener">Ver «${reel.title}» en Instagram</a>`}
+            />
+            <span class="reel__loading caption" data-reel-loading>Cargando desde Instagram…</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <p class="reels__foot reveal" data-reveal="fade">
+      <a href={site.instagramUrl} target="_blank" rel="noopener" class="link-u" data-cursor>
+        Más contenido en Instagram → @{site.instagram}
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .reels {
+    background: var(--surface);
+    padding: clamp(48px, 8vh, 96px) var(--pad-x);
+  }
+
+  .reels__h .line { display: block; overflow: hidden; padding-bottom: 0.05em; }
+  .reels__h .line span, .reels__h .line em { display: block; }
+  .reels__h em { color: var(--fg-dim); }
+
+  .reels__intro { max-width: 32ch; text-align: right; }
+
+  .reels__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 44px);
+    justify-items: center;
+  }
+
+  .reel {
+    display: grid;
+    gap: 14px;
+    width: 100%;
+    max-width: 460px;
+  }
+
+  .reel__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .reel__title {
+    font-family: var(--serif);
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    color: var(--fg);
+  }
+
+  .reel__tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  /* El embed de Instagram trae su propia tarjeta blanca: la enmarcamos
+     para que no flote suelta sobre el fondo del sitio. */
+  .reel__slot {
+    position: relative;
+    display: grid;
+    min-height: 420px;
+    padding: 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+  }
+
+  .reel__slot :global(.instagram-media) {
+    margin: 0 !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Enlace de reserva mientras no ha cargado el script de Instagram */
+  .reel__slot :global(.instagram-media a) {
+    display: grid;
+    place-items: center;
+    min-height: 400px;
+    padding: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--fg-dim);
+  }
+
+  .reel__loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .reel__slot.is-ready .reel__loading { display: none; }
+
+  .reels__foot {
+    margin-top: clamp(24px, 4vh, 44px);
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--fg-dim);
+  }
+
+  @media (max-width: 860px) {
+    .reels__intro { text-align: left; }
+    .reels__grid { grid-template-columns: 1fr; }
+  }
+</style>

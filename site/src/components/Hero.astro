@@ -1,0 +1,315 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '../data/site';
+import { projects } from '../data/projects';
+
+/* Cuatro portadas que rotan de fondo, una por especialidad */
+const pick = (slug: string, i = 0) => {
+  const p = projects.find((x) => x.slug === slug)!;
+  return { photo: p.photos[i], title: p.title, category: p.categoryLabel };
+};
+
+const slides = [
+  pick('la-pinseria'),
+  pick('joyeria'),
+  pick('nair', 1),
+  pick('arista', 2),
+];
+---
+
+<section class="hero" id="top">
+  <div class="hero__stage" aria-hidden="true">
+    {slides.map((s, i) => (
+      <div class:list={['hero__slide', { 'is-active': i === 0 }]} data-slide={i}>
+        <Image
+          src={s.photo}
+          alt=""
+          widths={[900, 1440, 1920]}
+          sizes="100vw"
+          format="webp"
+          quality={76}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          fetchpriority={i === 0 ? 'high' : undefined}
+        />
+      </div>
+    ))}
+    <div class="hero__veil"></div>
+  </div>
+
+  <div class="hero__inner shell">
+    <p class="eyebrow hero__eyebrow reveal" data-reveal="fade">
+      <span class="hero__dot"></span>
+      {site.role} · {site.location}
+    </p>
+
+    <h1 class="display hero__title">
+      <span class="line"><span data-reveal="mask">Imágenes</span></span>
+      <span class="line"><em class="italic" data-reveal="mask">que venden</em></span>
+    </h1>
+
+    <p class="lead hero__lead reveal" data-reveal="fade">{site.tagline}</p>
+
+    <div class="hero__actions reveal" data-reveal="fade">
+      <a href="/portafolio" class="btn btn--solid" data-cursor>
+        Ver portafolio
+        <svg class="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+      <a href="/contacto" class="btn btn--ghost" data-cursor>Hablemos de tu marca</a>
+    </div>
+  </div>
+
+  <div class="hero__foot shell">
+    <div class="hero__now">
+      <span class="hero__now-tick" aria-hidden="true"></span>
+      <span class="hero__now-t">
+        {slides.map((s, i) => (
+          <span class:list={['hero__now-l', { 'is-active': i === 0 }]} data-slide-label={i}>
+            {s.title} <i>— {s.category}</i>
+          </span>
+        ))}
+      </span>
+    </div>
+
+    <div class="hero__bars" role="tablist" aria-label="Cambiar imagen de portada">
+      {slides.map((s, i) => (
+        <button
+          class:list={['hero__bar', { 'is-active': i === 0 }]}
+          type="button"
+          data-slide-btn={i}
+          aria-label={`Ver ${s.title}`}
+          data-cursor
+        >
+          <i></i>
+        </button>
+      ))}
+    </div>
+
+    <a href="#galeria" class="hero__scroll" data-cursor>
+      <span class="caption">Scroll</span>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    align-items: end;
+    padding: clamp(120px, 16vh, 180px) var(--pad-x) clamp(22px, 3vh, 34px);
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  /* ── Fondo rotativo ── */
+  .hero__stage {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #0a0a0a;
+  }
+
+  .hero__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+  .hero__slide.is-active { opacity: 1; }
+
+  .hero__slide :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.08);
+  }
+
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(105deg, rgba(8, 8, 8, 0.96) 0%, rgba(8, 8, 8, 0.82) 40%, rgba(8, 8, 8, 0.34) 74%, rgba(8, 8, 8, 0.55) 100%),
+      linear-gradient(to top, rgba(8, 8, 8, 0.92) 0%, transparent 40%);
+  }
+
+  /* En tema claro la foto se aclara para que el crema siga mandando */
+  :root[data-theme='light'] .hero__veil {
+    background:
+      linear-gradient(105deg, rgba(245, 240, 232, 0.97) 0%, rgba(245, 240, 232, 0.86) 42%, rgba(245, 240, 232, 0.36) 76%, rgba(245, 240, 232, 0.55) 100%),
+      linear-gradient(to top, rgba(245, 240, 232, 0.94) 0%, transparent 40%);
+  }
+
+  /* ── Contenido ── */
+  .hero__inner {
+    width: 100%;
+    display: grid;
+    gap: clamp(18px, 2.6vh, 30px);
+    align-content: end;
+    padding-bottom: clamp(36px, 6vh, 72px);
+    max-width: min(var(--maxw), 100%);
+  }
+
+  .hero__eyebrow { color: var(--fg-dim); }
+
+  .hero__dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    margin-right: 9px;
+    vertical-align: 1px;
+    animation: pulse 2.4s var(--ease) infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
+    70% { box-shadow: 0 0 0 9px rgba(74, 222, 128, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+  }
+
+  .hero__title {
+    margin-left: -0.045em;
+    max-width: 15ch;
+  }
+  .hero__title .line { display: block; overflow: hidden; padding-bottom: 0.045em; }
+  .hero__title .line span,
+  .hero__title .line em { display: block; }
+  .hero__title em { color: var(--fg-dim); }
+
+  .hero__lead { max-width: 42ch; }
+
+  .hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+
+  .btn--ghost {
+    background: color-mix(in srgb, var(--bg) 45%, transparent);
+    backdrop-filter: blur(8px);
+  }
+
+  /* ── Pie del hero ── */
+  .hero__foot {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .hero__now { display: flex; align-items: center; gap: 14px; min-width: 0; }
+
+  .hero__now-tick {
+    width: 22px;
+    height: 1px;
+    background: var(--line-strong);
+    flex: 0 0 auto;
+  }
+
+  .hero__now-t { position: relative; display: grid; }
+
+  .hero__now-l {
+    grid-area: 1 / 1;
+    font-size: 11px;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    color: var(--fg);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .hero__now-l.is-active { opacity: 1; transform: none; }
+  .hero__now-l i { color: var(--fg-muted); font-style: normal; }
+
+  .hero__bars { display: flex; gap: 8px; }
+
+  .hero__bar {
+    width: 44px;
+    height: 16px;
+    display: grid;
+    align-items: center;
+    padding: 0;
+  }
+  .hero__bar i {
+    display: block;
+    height: 1px;
+    width: 100%;
+    background: var(--line-strong);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero__bar i::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--fg);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .hero__bar.is-active i::after { animation: barFill 6s linear forwards; }
+  .hero__bar.is-done i::after { transform: scaleX(1); }
+
+  @keyframes barFill {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  .hero__scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--fg-muted);
+    transition: color 0.3s var(--ease);
+  }
+  .hero__scroll:hover { color: var(--fg); }
+  .hero__scroll svg { animation: nudge 2.4s var(--ease-in-out) infinite; }
+  @keyframes nudge {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(4px); }
+  }
+
+  @media (max-width: 900px) {
+    .hero__now { display: none; }
+    .hero__foot { justify-content: space-between; }
+
+    /* En vertical el texto ocupa todo el ancho: el velo pasa a ser vertical */
+    .hero__veil {
+      background: linear-gradient(
+        to top,
+        rgba(8, 8, 8, 0.95) 0%,
+        rgba(8, 8, 8, 0.88) 44%,
+        rgba(8, 8, 8, 0.52) 74%,
+        rgba(8, 8, 8, 0.72) 100%
+      );
+    }
+    :root[data-theme='light'] .hero__veil {
+      background: linear-gradient(
+        to top,
+        rgba(245, 240, 232, 0.96) 0%,
+        rgba(245, 240, 232, 0.9) 44%,
+        rgba(245, 240, 232, 0.55) 74%,
+        rgba(245, 240, 232, 0.74) 100%
+      );
+    }
+  }
+
+  @media (max-width: 620px) {
+    .hero {
+      padding-top: 108px;
+      min-height: 92svh;
+    }
+    .hero__title { max-width: none; }
+    .hero__actions .btn { flex: 1 1 auto; justify-content: center; }
+    .hero__scroll .caption { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__bar.is-active i::after { animation: none; transform: scaleX(1); }
+    .hero__scroll svg { animation: none; }
+  }
+</style>

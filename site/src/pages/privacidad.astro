@@ -1,0 +1,105 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base
+  title={`Política de privacidad — ${site.name}`}
+  description="Cómo se tratan los datos enviados desde el formulario de contacto."
+>
+  <div class="legal">
+    <div class="shell legal__inner">
+      <a href="/" class="legal__back link-u" data-cursor>← Volver al inicio</a>
+
+      <header class="legal__head">
+        <p class="eyebrow">Legal</p>
+        <h1 class="display">Política de privacidad</h1>
+        <p class="caption">Última actualización: enero de dos mil veintiséis</p>
+      </header>
+
+      <section>
+        <h2>¿Qué información recogemos?</h2>
+        <p>
+          Al completar el formulario de contacto, recopilamos tu nombre, marca, el servicio de
+          interés y la descripción de tu proyecto. Esta información se transmite directamente a
+          través de WhatsApp y no se almacena en ningún servidor propio.
+        </p>
+      </section>
+
+      <section>
+        <h2>¿Para qué usamos tu información?</h2>
+        <p>
+          Únicamente para responder a tu consulta, enviar una cotización o coordinar una sesión
+          fotográfica. No compartimos tus datos con terceros, no los vendemos ni los usamos para
+          fines publicitarios.
+        </p>
+      </section>
+
+      <section>
+        <h2>Cookies y rastreo</h2>
+        <p>
+          Esta web no utiliza cookies propias ni herramientas de analítica de terceros. No hay
+          píxeles de seguimiento ni scripts de publicidad. La única preferencia guardada localmente
+          en tu navegador es el tema claro u oscuro que elijas.
+        </p>
+      </section>
+
+      <section>
+        <h2>Contenido incrustado</h2>
+        <p>
+          Los videos del portafolio se cargan desde Instagram únicamente cuando haces clic en ellos.
+          A partir de ese momento aplica la política de privacidad de Meta.
+        </p>
+      </section>
+
+      <section>
+        <h2>Tus derechos</h2>
+        <p>
+          Puedes solicitar la eliminación de cualquier dato en cualquier momento escribiendo a
+          <a href={`mailto:${site.email}`} class="link-u">{site.email}</a>.
+        </p>
+      </section>
+
+      <footer class="legal__foot caption">
+        {site.name} · {site.location} · {site.email}
+      </footer>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .legal {
+    min-height: 100vh;
+    padding: clamp(70px, 12vh, 130px) var(--pad-x) clamp(60px, 10vh, 110px);
+    background: var(--bg);
+  }
+
+  .legal__inner {
+    max-width: 760px;
+    display: grid;
+    gap: 34px;
+  }
+
+  .legal__back { font-size: 13px; color: var(--fg-muted); justify-self: start; }
+
+  .legal__head { display: grid; gap: 14px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+  .legal__head h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); }
+
+  .legal section { display: grid; gap: 12px; }
+
+  .legal h2 {
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--fg);
+  }
+
+  .legal p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--fg-dim);
+  }
+
+  .legal__foot { padding-top: 24px; border-top: 1px solid var(--line); }
+</style>
