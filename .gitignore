@@ -9,11 +9,13 @@ dist/
 .output/
 .vercel/
 .netlify/
+.wrangler/
 
 # Entorno
 .env
 .env.*
 !.env.example
+.dev.vars*
 
 # Sistema operativo
 .DS_Store
