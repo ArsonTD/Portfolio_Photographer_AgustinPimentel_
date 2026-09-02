@@ -1,8 +1,14 @@
 ---
 import { nav, site } from '../data/site';
 
-const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
-const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+// Los href llevan barra final y Astro.url.pathname puede traerla o no:
+// se normalizan los dos lados para que la comparación no dependa de eso.
+const sinBarra = (ruta: string) => ruta.replace(/\/+$/, '') || '/';
+const path = sinBarra(Astro.url.pathname);
+const isActive = (href: string) => {
+  const h = sinBarra(href);
+  return path === h || path.startsWith(`${h}/`);
+};
 ---
 
 <header class="nav" id="nav">

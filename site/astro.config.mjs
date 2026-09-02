@@ -15,6 +15,9 @@ const site =
 export default defineConfig({
   site: site.startsWith('http') ? site : `https://${site}`,
   // El puerto lo asigna el entorno (PORT); 4321 es solo el valor por defecto.
+  // El build emite directorios y Cloudflare redirige a la forma con
+  // barra final: se exige aquí para que dev y producción coincidan.
+  trailingSlash: 'always',
   server: { port: Number(process.env.PORT) || 4321 },
   integrations: [react(), sitemap()],
   image: {

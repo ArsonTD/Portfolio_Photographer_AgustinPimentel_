@@ -9,6 +9,9 @@
     "cwd": "site",
     "command": "npm ci && npm run build"
   },
+  // Sin declararlo, wrangler lo activa por su cuenta en cada despliegue.
+  // Se fija aquí para que el comportamiento no dependa del valor por defecto.
+  "workers_dev": true,
   "assets": {
     "directory": "./site/dist"
   }

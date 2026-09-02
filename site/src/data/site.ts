@@ -21,11 +21,11 @@ export const stats = [
 ];
 
 export const nav = [
-  { href: '/portafolio', label: 'Portafolio' },
-  { href: '/videos', label: 'Videos' },
-  { href: '/servicios', label: 'Servicios' },
-  { href: '/sobre-mi', label: 'Sobre mí' },
-  { href: '/contacto', label: 'Contacto' },
+  { href: '/portafolio/', label: 'Portafolio' },
+  { href: '/videos/', label: 'Videos' },
+  { href: '/servicios/', label: 'Servicios' },
+  { href: '/sobre-mi/', label: 'Sobre mí' },
+  { href: '/contacto/', label: 'Contacto' },
 ];
 
 export const services = [
