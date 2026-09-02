@@ -1,0 +1,10 @@
+# Cloudflare aplica estas reglas a los archivos estáticos.
+# Equivalen a las de vercel.json, para que el sitio se comporte igual
+# en los dos hospedajes.
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
