@@ -1,0 +1,15 @@
+{
+  // El sitio de Astro vive en site/, no en la raíz del repositorio.
+  // Cloudflare clona el repo y ejecuta `npx wrangler deploy`, así que aquí
+  // le decimos las dos cosas que le faltaban: cómo compilar y dónde quedan
+  // los archivos estáticos resultantes.
+  "name": "portfolio-photographer-agustinpimentel",
+  "compatibility_date": "2026-09-01",
+  "build": {
+    "cwd": "site",
+    "command": "npm ci && npm run build"
+  },
+  "assets": {
+    "directory": "./site/dist"
+  }
+}

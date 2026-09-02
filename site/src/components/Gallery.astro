@@ -171,7 +171,10 @@ const isFull = variant === 'full';
 
   /* ── Mosaico ── */
   .gal__grid {
-    column-count: 3;
+    /* Hasta tres columnas, y ninguna por debajo de ~250px: el número se
+       ajusta solo al ancho en vez de saltar en un corte fijo, así el
+       mosaico mantiene su densidad en portátiles y tabletas. */
+    columns: 3 250px;
     /* Calles finas: las fotos casi se tocan, como en la referencia */
     column-gap: clamp(8px, 0.7vw, 13px);
   }
@@ -271,9 +274,8 @@ const isFull = variant === 'full';
   }
   .gal__cta-btns { display: flex; gap: 12px; flex-wrap: wrap; }
 
-  @media (max-width: 1100px) { .gal__grid { column-count: 2; } }
-  @media (max-width: 640px) {
-    .gal__grid { column-count: 1; }
+  @media (max-width: 620px) {
+    .gal__grid { columns: 1; }
     .shot { margin-bottom: 30px; }
     .gal__cta-btns .btn { flex: 1 1 auto; justify-content: center; }
     .gal__count { display: none; }
