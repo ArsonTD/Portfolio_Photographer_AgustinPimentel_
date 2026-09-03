@@ -1,20 +1,46 @@
 ---
+import type { ImageMetadata } from 'astro';
 import { projects } from '../data/projects';
 
-const names = projects.map((p) => p.title);
-const items = [...names, 'Glorioso', 'Nila'];
+/* Los logos que enviaron las marcas vienen en colores incompatibles entre sí:
+   unos claros, otros oscuros, y alguno con fondo blanco. Se guardan ya
+   convertidos a máscara alfa para pintarlos con el color del tema, así se
+   leen igual sobre fondo oscuro y sobre fondo claro. */
+const archivos = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/logos/*.png',
+  { eager: true }
+);
+
+const logoDe = (slug: string): ImageMetadata | undefined =>
+  archivos[`../assets/logos/${slug}.png`]?.default;
+
+/* Las marcas que todavía no han enviado logo siguen apareciendo con su
+   nombre, para que ninguna se caiga de la franja. */
+const items = projects.map((p) => ({
+  title: p.title,
+  logo: logoDe(p.slug),
+}));
 ---
 
 <section class="mq" aria-label="Marcas con las que he trabajado">
   <div class="mq__track" data-marquee>
     {[0, 1, 2].map((rep) => (
       <div class="mq__group" aria-hidden={rep > 0 ? 'true' : undefined}>
-        {items.map((n) => (
-          <span class="mq__item">
-            <span class="mq__star" aria-hidden="true">✳</span>
-            {n}
-          </span>
-        ))}
+        {items.map((it) =>
+          it.logo ? (
+            <span
+              class="mq__logo"
+              style={`--logo:url('${it.logo.src}');--ar:${(it.logo.width / it.logo.height).toFixed(3)}`}
+              role="img"
+              aria-label={rep === 0 ? it.title : undefined}
+            />
+          ) : (
+            <span class="mq__item">
+              <span class="mq__star" aria-hidden="true">✳</span>
+              {it.title}
+            </span>
+          )
+        )}
       </div>
     ))}
   </div>
@@ -55,5 +81,24 @@ const items = [...names, 'Glorioso', 'Nila'];
     font-family: var(--sans);
     font-size: 11px;
     color: var(--fg-muted);
+  }
+
+  /* El logo se pinta como silueta con el color del texto: la imagen sólo
+     aporta la forma, así que el mismo archivo sirve para los dos temas.
+     La proporción va en aspect-ratio para que la fila tenga su ancho final
+     antes de que la imagen llegue a cargarse (la animación mide ese ancho). */
+  .mq__logo {
+    flex: none;
+    height: clamp(20px, 2.4vw, 30px);
+    aspect-ratio: var(--ar);
+    background-color: var(--fg-dim);
+    -webkit-mask-image: var(--logo);
+    mask-image: var(--logo);
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
   }
 </style>
