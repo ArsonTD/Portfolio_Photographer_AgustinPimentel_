@@ -14,12 +14,18 @@ const archivos = import.meta.glob<{ default: ImageMetadata }>(
 const logoDe = (slug: string): ImageMetadata | undefined =>
   archivos[`../assets/logos/${slug}.png`]?.default;
 
+/* La franja es de marcas con las que ha trabajado, así que se deja fuera lo
+   que no es una marca: "Joyería" es el nombre de una especialidad. */
+const fuera = new Set(['joyeria']);
+
 /* Las marcas que todavía no han enviado logo siguen apareciendo con su
    nombre, para que ninguna se caiga de la franja. */
-const items = projects.map((p) => ({
-  title: p.title,
-  logo: logoDe(p.slug),
-}));
+const items = projects
+  .filter((p) => !fuera.has(p.slug))
+  .map((p) => ({
+    title: p.title,
+    logo: logoDe(p.slug),
+  }));
 ---
 
 <section class="mq" aria-label="Marcas con las que he trabajado">
