@@ -45,7 +45,7 @@ export const projects: Project[] = [
     categoryLabel: 'Gastronomía',
     year: '2025',
     blurb: 'Cafetería de autor: platos, repostería y ambientación de sala.',
-    photos: ['flor-de-cafe.jpg', 'flor-de-cafe-2.jpg', 'flor-de-cafe-3.jpg', 'flor-de-cafe-4.jpg', 'flor-de-cafe-5.jpg', 'flor-de-cafe-6.jpg', 'flor-de-cafe-7.jpg', 'flor-de-cafe-8.jpg', 'flor-de-cafe-9.jpg', 'flor-de-cafe-10.jpg', 'flor-de-cafe-11.jpg', 'flor-de-cafe-12.jpg', 'flor-de-cafe-13.jpg', 'flor-de-cafe-14.jpg', 'flor-de-cafe-15.jpg', 'flor-de-cafe-16.jpg', 'flor-de-cafe-17.jpg'].map(img),
+    photos: ['flor-de-cafe-12.jpg', 'flor-de-cafe.jpg', 'flor-de-cafe-2.jpg', 'flor-de-cafe-3.jpg', 'flor-de-cafe-4.jpg', 'flor-de-cafe-5.jpg', 'flor-de-cafe-6.jpg', 'flor-de-cafe-7.jpg', 'flor-de-cafe-8.jpg', 'flor-de-cafe-9.jpg', 'flor-de-cafe-10.jpg', 'flor-de-cafe-11.jpg', 'flor-de-cafe-13.jpg', 'flor-de-cafe-14.jpg', 'flor-de-cafe-15.jpg', 'flor-de-cafe-16.jpg', 'flor-de-cafe-17.jpg'].map(img),
   },
   {
     slug: 'joyeria',
@@ -63,7 +63,7 @@ export const projects: Project[] = [
     categoryLabel: 'Gastronomía',
     year: '2025',
     blurb: 'Pizza napolitana con luz dirigida sobre fondos profundos.',
-    photos: ['dolce-italia.jpg', 'dolce-italia-2.jpg', 'dolce-italia-3.jpg', 'dolce-italia-4.jpg'].map(img),
+    photos: ['dolce-italia-3.jpg', 'dolce-italia.jpg', 'dolce-italia-2.jpg', 'dolce-italia-4.jpg'].map(img),
   },
   {
     slug: 'bonno',
@@ -72,7 +72,7 @@ export const projects: Project[] = [
     categoryLabel: 'Gastronomía',
     year: '2025',
     blurb: 'Cheesecakes y repostería de vitrina para carta y redes.',
-    photos: ['bonno.jpg', 'bonno-2.jpg', 'bonno-3.jpg', 'bonno-4.jpg', 'bonno-5.jpg', 'bonno-6.jpg', 'bonno-7.jpg'].map(img),
+    photos: ['bonno-5.jpg', 'bonno.jpg', 'bonno-2.jpg', 'bonno-3.jpg', 'bonno-4.jpg', 'bonno-6.jpg', 'bonno-7.jpg'].map(img),
   },
   {
     slug: 'glorioso',
@@ -99,7 +99,7 @@ export const projects: Project[] = [
     categoryLabel: 'Gastronomía',
     year: '2025',
     blurb: 'Rolls y entradas de barra para carta y contenido digital.',
-    photos: ['planeta-sushi.jpg', 'planeta-sushi-2.jpg', 'planeta-sushi-3.jpg', 'planeta-sushi-4.jpg', 'planeta-sushi-5.jpg', 'planeta-sushi-6.jpg', 'planeta-sushi-7.jpg', 'planeta-sushi-8.jpg', 'planeta-sushi-9.jpg', 'planeta-sushi-10.jpg', 'planeta-sushi-11.jpg', 'planeta-sushi-12.jpg', 'planeta-sushi-13.jpg', 'planeta-sushi-14.jpg', 'planeta-sushi-15.jpg', 'planeta-sushi-16.jpg', 'planeta-sushi-17.jpg', 'planeta-sushi-18.jpg', 'planeta-sushi-19.jpg', 'planeta-sushi-20.jpg', 'planeta-sushi-21.jpg', 'planeta-sushi-22.jpg', 'planeta-sushi-23.jpg'].map(img),
+    photos: ['planeta-sushi-9.jpg', 'planeta-sushi.jpg', 'planeta-sushi-2.jpg', 'planeta-sushi-3.jpg', 'planeta-sushi-4.jpg', 'planeta-sushi-5.jpg', 'planeta-sushi-6.jpg', 'planeta-sushi-7.jpg', 'planeta-sushi-8.jpg', 'planeta-sushi-10.jpg', 'planeta-sushi-11.jpg', 'planeta-sushi-12.jpg', 'planeta-sushi-13.jpg', 'planeta-sushi-14.jpg', 'planeta-sushi-15.jpg', 'planeta-sushi-16.jpg', 'planeta-sushi-17.jpg', 'planeta-sushi-18.jpg', 'planeta-sushi-19.jpg', 'planeta-sushi-20.jpg', 'planeta-sushi-21.jpg', 'planeta-sushi-22.jpg', 'planeta-sushi-23.jpg'].map(img),
   },
   {
     slug: 'la-pinseria',
@@ -117,7 +117,7 @@ export const projects: Project[] = [
     categoryLabel: 'Gastronomía',
     year: '2025',
     blurb: 'Comida criolla de servicio rápido con dirección apetitosa.',
-    photos: ['cielito.jpg', 'cielito-2.jpg', 'cielito-3.jpg', 'cielito-4.jpg', 'cielito-5.jpg', 'cielito-6.jpg', 'cielito-7.jpg', 'cielito-8.jpg', 'cielito-9.jpg', 'cielito-10.jpg', 'cielito-11.jpg'].map(img),
+    photos: ['cielito-9.jpg', 'cielito.jpg', 'cielito-2.jpg', 'cielito-3.jpg', 'cielito-4.jpg', 'cielito-5.jpg', 'cielito-6.jpg', 'cielito-7.jpg', 'cielito-8.jpg', 'cielito-10.jpg', 'cielito-11.jpg'].map(img),
   },
   {
     slug: 'nila',
