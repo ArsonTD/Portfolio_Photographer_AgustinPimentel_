@@ -26,6 +26,7 @@
   --line-strong: rgba(245, 240, 232, 0.28);
   --shadow:      0 30px 80px -30px rgba(0, 0, 0, 0.85);
   --star:        #eab54a;
+  --wa:          #25d366;
 
   /* Tipografía */
   --serif: 'Playfair Display', 'Iowan Old Style', Georgia, serif;
@@ -54,8 +55,10 @@
   --line:        rgba(20, 20, 20, 0.12);
   --line-strong: rgba(20, 20, 20, 0.34);
   --shadow:      0 30px 70px -34px rgba(60, 50, 35, 0.45);
-  /* Sobre crema hace falta un oro más profundo para que se lea */
+  /* Sobre crema hacen falta tonos más profundos para que se lean:
+     el verde de marca de WhatsApp da 1,75:1 sobre este fondo. */
   --star:        #c08a1e;
+  --wa:          #0f7a35;
   color-scheme: light;
 }
 
