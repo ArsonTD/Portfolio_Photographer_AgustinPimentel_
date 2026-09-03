@@ -1,10 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import { site, tiposDeNegocio, necesidades } from '../data/site';
-import { projects } from '../data/projects';
 
-/* Una foto de producto acompaña el formulario, como en la referencia */
-const muestra = projects.find((p) => p.slug === 'zidal-plus')!.photos[0];
+/* La foto que acompaña al formulario es de gastronomía de restaurante, que es
+   el trabajo que describe el texto de al lado. Se importa directamente en vez
+   de buscarla en projects para que no dependa del orden de esa lista. */
+import muestra from '../assets/photos/flor-de-cafe-9.jpg';
 ---
 
 <button class="fab" id="quote-open" type="button" aria-haspopup="dialog" data-cursor>
