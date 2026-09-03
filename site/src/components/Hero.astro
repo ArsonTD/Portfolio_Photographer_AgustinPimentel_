@@ -3,17 +3,23 @@ import { Image } from 'astro:assets';
 import { site } from '../data/site';
 import { projects } from '../data/projects';
 
-/* Cuatro portadas que rotan de fondo, una por especialidad */
-const pick = (slug: string, i = 0) => {
-  const p = projects.find((x) => x.slug === slug)!;
-  return { photo: p.photos[i], title: p.title, category: p.categoryLabel };
+/* Cinco fondos de gastronomía que rotan. La foto se elige por nombre de
+   archivo y no por posición: así, si algún día se reordenan las fotos de un
+   proyecto, el hero no cambia solo y en silencio. */
+const pick = (slug: string, archivo: string) => {
+  const p = projects.find((x) => x.slug === slug);
+  if (!p) throw new Error(`Hero: no existe el proyecto ${slug}`);
+  const photo = p.photos.find((f) => f.src.includes(archivo));
+  if (!photo) throw new Error(`Hero: falta ${archivo} en ${slug}`);
+  return { photo, title: p.title, category: p.categoryLabel };
 };
 
 const slides = [
-  pick('la-pinseria'),
-  pick('joyeria'),
-  pick('nair', 1),
-  pick('arista', 2),
+  pick('flor-de-cafe', 'flor-de-cafe-12'),
+  pick('dolce-italia', 'dolce-italia-3'),
+  pick('planeta-sushi', 'planeta-sushi-9'),
+  pick('bonno', 'bonno-5'),
+  pick('cielito', 'cielito-9'),
 ];
 ---
 
